@@ -12,40 +12,44 @@
 #include "FadeTip.h"
 #include "AboutDlg.h"
 
-#define WM_USER_TRAYNOTIFY		WM_APP + 8048	// ◊‘∂®“Âœ˚œ¢ ID
-#define TT_FILTERWND_NUM		5				// π˝¬À¥∞ø⁄ ˝
+#define WM_USER_TRAYNOTIFY WM_APP + 8048 // Ëá™ÂÆö‰πâÊ∂àÊÅØ ID
+#define TT_FILTERWND_NUM 5				 // ËøáÊª§Á™óÂè£Êï∞
 /////////////////////////////////////////////////////////////////////////////
 // CToggleTopMainDlg dialog
 
 class CToggleTopMainDlg : public CDialog
 {
-// Construction
-public:
-	CToggleTopMainDlg(CWnd* pParent = NULL);	// standard constructor
+	// Construction
+  public:
+	CToggleTopMainDlg(CWnd *pParent = NULL); // standard constructor
 
-	CHtmlView* m_pwndHelp;
+	CHtmlView *m_pwndHelp;
 	CDlgSetting m_dlgSetting;
 	CAboutDlg m_dlgAbout;
 
 	NOTIFYICONDATA m_struNID;
 
-// Dialog Data
+	// Dialog Data
 	//{{AFX_DATA(CToggleTopMainDlg)
-	enum { IDD = IDD_TOGGLETOP_DIALOG };
-	BOOL	m_bHelp;
+	enum
+	{
+		IDD = IDD_TOGGLETOP_DIALOG
+	};
+	BOOL m_bHelp;
 	//}}AFX_DATA
 
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CToggleTopMainDlg)
-	public:
+  public:
 	virtual void WinHelp(DWORD dwData, UINT nCmd = HELP_CONTEXT);
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
+
+  protected:
+	virtual void DoDataExchange(CDataExchange *pDX); // DDX/DDV support
 	virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
 	//}}AFX_VIRTUAL
 
-// Implementation
-protected:
+	// Implementation
+  protected:
 	void ShowMainWnd();
 	BOOL GetFilterWnd();
 	HICON m_hIcon;
@@ -70,9 +74,8 @@ protected:
 	afx_msg void OnTrayNotify(WPARAM wParam, LPARAM lParam);
 	afx_msg LRESULT OnNewSession(WPARAM wParam, LPARAM lParam);
 	DECLARE_MESSAGE_MAP()
-private:
+  private:
 	void InitHelpWnd();
-
 };
 
 //{{AFX_INSERT_LOCATION}}

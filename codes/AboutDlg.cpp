@@ -21,7 +21,7 @@ CAboutDlg::CAboutDlg() : CDialog(CAboutDlg::IDD)
 	//}}AFX_DATA_INIT
 }
 
-void CAboutDlg::DoDataExchange(CDataExchange* pDX)
+void CAboutDlg::DoDataExchange(CDataExchange *pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CAboutDlg)
@@ -29,10 +29,10 @@ void CAboutDlg::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(CAboutDlg, CDialog)
-	//{{AFX_MSG_MAP(CAboutDlg)
-	ON_WM_LBUTTONDOWN()
-	ON_WM_PAINT()
-	//}}AFX_MSG_MAP
+//{{AFX_MSG_MAP(CAboutDlg)
+ON_WM_LBUTTONDOWN()
+ON_WM_PAINT()
+//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -40,35 +40,39 @@ END_MESSAGE_MAP()
 void CAboutDlg::OnOK()
 {
 	//AnimateHide();
-	EndModalLoop( m_nModalResult );
+	EndModalLoop(m_nModalResult);
 }
 
 void CAboutDlg::OnCancel()
 {
 	//AnimateHide();
-	EndModalLoop( m_nModalResult );
+	EndModalLoop(m_nModalResult);
 }
 
-void CAboutDlg::OnLButtonDown(UINT nFlags, CPoint point) 
+void CAboutDlg::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	// TODO: Add your message handler code here and/or call default
 	// AnimateHide();
-	EndModalLoop( m_nModalResult );
-	
+	EndModalLoop(m_nModalResult);
+
 	CDialog::OnLButtonDown(nFlags, point);
 }
 
 #ifndef _AFX_OLD_EXCEPTIONS
-#define DELETE_EXCEPTION(e) do { e->Delete(); } while (0)
-#else   //!_AFX_OLD_EXCEPTIONS
+#define DELETE_EXCEPTION(e) \
+	do                      \
+	{                       \
+		e->Delete();        \
+	} while (0)
+#else //!_AFX_OLD_EXCEPTIONS
 #define DELETE_EXCEPTION(e)
-#endif  //_AFX_OLD_EXCEPTIONS
+#endif //_AFX_OLD_EXCEPTIONS
 
 int CAboutDlg::DoModal()
 {
 	// can be constructed with a resource template or InitModalIndirect
 	ASSERT(m_lpszTemplateName != NULL || m_hDialogTemplate != NULL ||
-		m_lpDialogTemplate != NULL);
+		   m_lpDialogTemplate != NULL);
 
 	// load resource as necessary
 	LPCDLGTEMPLATE lpDialogTemplate = m_lpDialogTemplate;
@@ -102,12 +106,12 @@ int CAboutDlg::DoModal()
 		// create modeless dialog
 		AfxHookWindowCreate(this);
 		if (CreateDlgIndirect(lpDialogTemplate,
-						CWnd::FromHandle(hWndParent), hInst))
+							  CWnd::FromHandle(hWndParent), hInst))
 		{
 			if (m_nFlags & WF_CONTINUEMODAL)
 			{
-				// Ω•œ÷–ßπ˚
-				::AnimateWindow( m_hWnd, 300, AW_BLEND );
+				// Ê∏êÁé∞ÊïàÊûú
+				::AnimateWindow(m_hWnd, 300, AW_BLEND);
 
 				// enter modal loop
 				DWORD dwFlags = MLF_SHOWONIDLE;
@@ -116,13 +120,12 @@ int CAboutDlg::DoModal()
 				VERIFY(RunModalLoop(dwFlags) == m_nModalResult);
 			}
 
-			// Ω•“˛–ßπ˚
-			::AnimateWindow( m_hWnd, 300, AW_HIDE | AW_BLEND );
+			// Ê∏êÈöêÊïàÊûú
+			::AnimateWindow(m_hWnd, 300, AW_HIDE | AW_BLEND);
 
 			// hide the window before enabling the parent, etc.
 			if (m_hWnd != NULL)
-				SetWindowPos(NULL, 0, 0, 0, 0, SWP_HIDEWINDOW|
-					SWP_NOSIZE|SWP_NOMOVE|SWP_NOACTIVATE|SWP_NOZORDER);
+				SetWindowPos(NULL, 0, 0, 0, 0, SWP_HIDEWINDOW | SWP_NOSIZE | SWP_NOMOVE | SWP_NOACTIVATE | SWP_NOZORDER);
 		}
 	}
 	CATCH_ALL(e)
@@ -150,11 +153,11 @@ int CAboutDlg::DoModal()
 	return m_nModalResult;
 }
 
-void CAboutDlg::OnPaint() 
+void CAboutDlg::OnPaint()
 {
 	CDialog::OnPaint();
 
 	CPaintDC paintDC(this); // device context for painting
-	
-	// TODO: ªÊ÷∆≥Ã–Úµƒ±ÍÃ‚
+
+	// TODO: ÁªòÂà∂Á®ãÂ∫èÁöÑÊ†áÈ¢ò
 }

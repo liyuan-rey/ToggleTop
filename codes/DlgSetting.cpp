@@ -16,8 +16,7 @@ extern CToggleTopApp theApp;
 /////////////////////////////////////////////////////////////////////////////
 // CDlgSetting dialog
 
-
-CDlgSetting::CDlgSetting(CWnd* pParent /*=NULL*/)
+CDlgSetting::CDlgSetting(CWnd *pParent /*=NULL*/)
 	: CDialog(CDlgSetting::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CDlgSetting)
@@ -29,8 +28,7 @@ CDlgSetting::CDlgSetting(CWnd* pParent /*=NULL*/)
 	//}}AFX_DATA_INIT
 }
 
-
-void CDlgSetting::DoDataExchange(CDataExchange* pDX)
+void CDlgSetting::DoDataExchange(CDataExchange *pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CDlgSetting)
@@ -44,10 +42,9 @@ void CDlgSetting::DoDataExchange(CDataExchange* pDX)
 	//}}AFX_DATA_MAP
 }
 
-
 BEGIN_MESSAGE_MAP(CDlgSetting, CDialog)
-	//{{AFX_MSG_MAP(CDlgSetting)
-	//}}AFX_MSG_MAP
+//{{AFX_MSG_MAP(CDlgSetting)
+//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -61,99 +58,99 @@ void CDlgSetting::InitSetting(PNOTIFYICONDATA pNID)
 	m_bQueryEnd = theApp.m_struIniInfo.general.bQueryEnd;
 
 	m_bAutoRun = theApp.m_struIniInfo.general.bAutoRun;
-	if( !SetAutoRun( m_bAutoRun ) )
+	if (!SetAutoRun(m_bAutoRun))
 	{
 		ASSERT(0);
 	}
 
 	m_bNoTray = theApp.m_struIniInfo.general.bNoTray;
-	if( !m_bNoTray )
+	if (!m_bNoTray)
 	{
-		if( !Shell_NotifyIcon( NIM_ADD, pNID ) )
+		if (!Shell_NotifyIcon(NIM_ADD, pNID))
 			ASSERT(0);
 	}
 
 	DWORD dwHotKey = theApp.m_struIniInfo.hotkey.dwHotToggTop;
-	if(	!RegisterHotKey( pNID->hWnd, IDHOT_SETTOP,
-			HIWORD(dwHotKey), LOWORD(dwHotKey) ) )
+	if (!RegisterHotKey(pNID->hWnd, IDHOT_SETTOP,
+						HIWORD(dwHotKey), LOWORD(dwHotKey)))
 	{
-		AfxMessageBox( _T("×¢²áµÚÒ»ÏµÍ³ÈÈ¼üÊ§°Ü."), MB_OK | MB_ICONERROR );
+		AfxMessageBox(_T("æ³¨å†Œç¬¬ä¸€ç³»ç»Ÿçƒ­é”®å¤±è´¥."), MB_OK | MB_ICONERROR);
 	}
 	else
-		m_hotToggTop.SetHotKey( LOWORD(dwHotKey), HIWORD(dwHotKey) );
+		m_hotToggTop.SetHotKey(LOWORD(dwHotKey), HIWORD(dwHotKey));
 
 	dwHotKey = theApp.m_struIniInfo.hotkey.dwHotShowBox;
-	if(	!RegisterHotKey( pNID->hWnd, IDHOT_SHOWBOX,
-			HIWORD(dwHotKey), LOWORD(dwHotKey) ) )
+	if (!RegisterHotKey(pNID->hWnd, IDHOT_SHOWBOX,
+						HIWORD(dwHotKey), LOWORD(dwHotKey)))
 	{
-		AfxMessageBox( _T("×¢²áµÚ¶þÏµÍ³ÈÈ¼üÊ§°Ü."), MB_OK | MB_ICONERROR );
+		AfxMessageBox(_T("æ³¨å†Œç¬¬äºŒç³»ç»Ÿçƒ­é”®å¤±è´¥."), MB_OK | MB_ICONERROR);
 	}
 	else
-		m_hotShowWnd.SetHotKey( LOWORD(dwHotKey), HIWORD(dwHotKey) );
+		m_hotShowWnd.SetHotKey(LOWORD(dwHotKey), HIWORD(dwHotKey));
 
-	UpdateData( FALSE );
+	UpdateData(FALSE);
 }
 
 BOOL CDlgSetting::ApplySetting(PNOTIFYICONDATA pNID)
 {
 	UpdateData();
 
-	// Ð£ÑéÊý¾ÝºÏ·¨ÐÔ
+	// æ ¡éªŒæ•°æ®åˆæ³•æ€§
 	WORD wHotToggTopH, wHotToggTopL, wHotShowWndH, wHotShowWndL;
 	m_hotToggTop.GetHotKey(wHotToggTopL, wHotToggTopH);
 	DWORD dwHotToggTop = (DWORD)MAKELONG(wHotToggTopL, wHotToggTopH);
 	m_hotShowWnd.GetHotKey(wHotShowWndL, wHotShowWndH);
 	DWORD dwHotShowWnd = (DWORD)MAKELONG(wHotShowWndL, wHotShowWndH);
 
-	if( dwHotToggTop == dwHotShowWnd )
+	if (dwHotToggTop == dwHotShowWnd)
 	{
-		AfxMessageBox( _T("ÈÈ¼ü²»ÄÜÖØ¸´."), MB_OK | MB_ICONINFORMATION );
+		AfxMessageBox(_T("çƒ­é”®ä¸èƒ½é‡å¤."), MB_OK | MB_ICONINFORMATION);
 		return FALSE;
 	}
 
-	// Ó¦ÓÃ×Ô¶¯¸üÐÂÉèÖÃ
+	// åº”ç”¨è‡ªåŠ¨æ›´æ–°è®¾ç½®
 	theApp.m_struIniInfo.checkver.bAutoChkVer = m_bAutoChkVer;
 
-	// Ó¦ÓÃÒ»°ãÉèÖÃ
+	// åº”ç”¨ä¸€èˆ¬è®¾ç½®
 	theApp.m_struIniInfo.general.bShowTip = m_bShowTip;
 	theApp.m_struIniInfo.general.bQueryEnd = m_bQueryEnd;
 
-	if( theApp.m_struIniInfo.general.bAutoRun != m_bAutoRun )
+	if (theApp.m_struIniInfo.general.bAutoRun != m_bAutoRun)
 	{
-		if( !SetAutoRun( m_bAutoRun ) )
+		if (!SetAutoRun(m_bAutoRun))
 		{
 			m_bAutoRun = theApp.m_struIniInfo.general.bAutoRun;
-			UpdateData( FALSE );
+			UpdateData(FALSE);
 			return FALSE;
 		}
 
 		theApp.m_struIniInfo.general.bAutoRun = m_bAutoRun;
 	}
 
-	if( theApp.m_struIniInfo.general.bNoTray != m_bNoTray )
+	if (theApp.m_struIniInfo.general.bNoTray != m_bNoTray)
 	{
-		if( !Shell_NotifyIcon( (m_bNoTray ? NIM_DELETE : NIM_ADD), pNID) )
+		if (!Shell_NotifyIcon((m_bNoTray ? NIM_DELETE : NIM_ADD), pNID))
 		{
-			AfxMessageBox( _T("ÉèÖÃÈÎÎñÀ¸Í¼±êÊ§°Ü."), MB_OK | MB_ICONERROR );
+			AfxMessageBox(_T("è®¾ç½®ä»»åŠ¡æ å›¾æ ‡å¤±è´¥."), MB_OK | MB_ICONERROR);
 			m_bShowTip = theApp.m_struIniInfo.general.bNoTray;
-			UpdateData( FALSE );
+			UpdateData(FALSE);
 			return FALSE;
 		}
 
 		theApp.m_struIniInfo.general.bNoTray = m_bNoTray;
 	}
 
-	// Ó¦ÓÃÈÈ¼üÉèÖÃ
-	if( (dwHotToggTop != 0) &&
-		(theApp.m_struIniInfo.hotkey.dwHotToggTop != dwHotToggTop) )
+	// åº”ç”¨çƒ­é”®è®¾ç½®
+	if ((dwHotToggTop != 0) &&
+		(theApp.m_struIniInfo.hotkey.dwHotToggTop != dwHotToggTop))
 	{
-		if( !RegisterHotKey( pNID->hWnd, IDHOT_SETTOP,
-				HIWORD(dwHotToggTop), LOWORD(dwHotToggTop) ) )
+		if (!RegisterHotKey(pNID->hWnd, IDHOT_SETTOP,
+							HIWORD(dwHotToggTop), LOWORD(dwHotToggTop)))
 		{
-			AfxMessageBox( _T("×¢²áµÚÒ»ÏµÍ³ÈÈ¼üÊ§°Ü."), MB_OK | MB_ICONERROR );
-			m_hotToggTop.SetHotKey( 
+			AfxMessageBox(_T("æ³¨å†Œç¬¬ä¸€ç³»ç»Ÿçƒ­é”®å¤±è´¥."), MB_OK | MB_ICONERROR);
+			m_hotToggTop.SetHotKey(
 				LOWORD(theApp.m_struIniInfo.hotkey.dwHotToggTop),
-				HIWORD(theApp.m_struIniInfo.hotkey.dwHotToggTop) );
+				HIWORD(theApp.m_struIniInfo.hotkey.dwHotToggTop));
 
 			return FALSE;
 		}
@@ -161,23 +158,23 @@ BOOL CDlgSetting::ApplySetting(PNOTIFYICONDATA pNID)
 		theApp.m_struIniInfo.hotkey.dwHotToggTop = dwHotToggTop;
 	}
 
-	if( (dwHotShowWnd != 0) &&
-		(theApp.m_struIniInfo.hotkey.dwHotShowBox != dwHotShowWnd) )
+	if ((dwHotShowWnd != 0) &&
+		(theApp.m_struIniInfo.hotkey.dwHotShowBox != dwHotShowWnd))
 	{
-		if(	!RegisterHotKey( pNID->hWnd, IDHOT_SHOWBOX,
-				HIWORD(dwHotShowWnd), LOWORD(dwHotShowWnd) ) )
+		if (!RegisterHotKey(pNID->hWnd, IDHOT_SHOWBOX,
+							HIWORD(dwHotShowWnd), LOWORD(dwHotShowWnd)))
 		{
-			AfxMessageBox( _T("×¢²áµÚ¶þÏµÍ³ÈÈ¼üÊ§°Ü."), MB_OK | MB_ICONERROR );
+			AfxMessageBox(_T("æ³¨å†Œç¬¬äºŒç³»ç»Ÿçƒ­é”®å¤±è´¥."), MB_OK | MB_ICONERROR);
 			m_hotShowWnd.SetHotKey(
 				LOWORD(theApp.m_struIniInfo.hotkey.dwHotShowBox),
-				HIWORD(theApp.m_struIniInfo.hotkey.dwHotShowBox) );
+				HIWORD(theApp.m_struIniInfo.hotkey.dwHotShowBox));
 
 			return FALSE;
 		}
 
 		theApp.m_struIniInfo.hotkey.dwHotShowBox = dwHotShowWnd;
 	}
-	
+
 	return TRUE;
 }
 
@@ -185,32 +182,32 @@ BOOL CDlgSetting::SetAutoRun(BOOL bFlag)
 {
 	HKEY hKey = NULL;
 	LRESULT lRet = RegCreateKeyEx(HKEY_LOCAL_MACHINE,
-		_T("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run"), 0L, NULL,
-		REG_OPTION_NON_VOLATILE, KEY_READ | KEY_WRITE, NULL,
-		&hKey, NULL );
+								  _T("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run"), 0L, NULL,
+								  REG_OPTION_NON_VOLATILE, KEY_READ | KEY_WRITE, NULL,
+								  &hKey, NULL);
 
-	if( ERROR_SUCCESS != lRet )
+	if (ERROR_SUCCESS != lRet)
 	{
-		AfxMessageBox( _T("·ÃÎÊ×¢²á±íÊ§°Ü."), MB_OK | MB_ICONERROR );
+		AfxMessageBox(_T("è®¿é—®æ³¨å†Œè¡¨å¤±è´¥."), MB_OK | MB_ICONERROR);
 		return FALSE;
 	}
 
-	if( bFlag )
+	if (bFlag)
 	{
-		lRet = RegSetValueEx( hKey, _T("ToggleTop"), 0L,
-			REG_SZ, (CONST BYTE*)(LPCTSTR)theApp.m_strAppPath,
-			theApp.m_strAppPath.GetLength() + sizeof(TCHAR) );
+		lRet = RegSetValueEx(hKey, _T("ToggleTop"), 0L,
+							 REG_SZ, (CONST BYTE *)(LPCTSTR)theApp.m_strAppPath,
+							 theApp.m_strAppPath.GetLength() + sizeof(TCHAR));
 	}
 	else
 	{
-		/*lRet = */RegDeleteValue( hKey, _T("ToggleTop") );
+		/*lRet = */ RegDeleteValue(hKey, _T("ToggleTop"));
 	}
 
-	if( ERROR_SUCCESS != lRet )
+	if (ERROR_SUCCESS != lRet)
 	{
-		AfxMessageBox( _T("Ð´×¢²á±íÊ§°Ü."), MB_OK | MB_ICONERROR );
+		AfxMessageBox(_T("å†™æ³¨å†Œè¡¨å¤±è´¥."), MB_OK | MB_ICONERROR);
 	}
 
-	RegCloseKey( hKey );
-	return ( ERROR_SUCCESS == lRet );
+	RegCloseKey(hKey);
+	return (ERROR_SUCCESS == lRet);
 }
